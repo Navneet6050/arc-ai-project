@@ -21,7 +21,7 @@
 
 <p>
   <a href="https://arc-ai-project.vercel.app/"><img src="https://img.shields.io/badge/Live-Demo-0d0221?style=for-the-badge&logo=vercel&logoColor=00fff5&labelColor=0d0221&color=00fff5" /></a>
-  <a href="https://github.com/Aashutosh31/arc-ai-project"><img src="https://img.shields.io/badge/Source-Code-0d0221?style=for-the-badge&logo=github&logoColor=ff2ee6&labelColor=0d0221&color=ff2ee6" /></a>
+  <a href="https://github.com/Navneet6050/arc-ai-project"><img src="https://img.shields.io/badge/Source-Code-0d0221?style=for-the-badge&logo=github&logoColor=ff2ee6&labelColor=0d0221&color=ff2ee6" /></a>
 </p>
 
 </div>
@@ -32,12 +32,6 @@
 **ARC-AI (Autonomous Real-time Conversational AI)** is a full-stack, voice-activated digital assistant that moves beyond traditional reactive chatbots into a **proactive, autonomous agent**.
 
 Evolving rapidly into a persistent AI workspace platform (similar to ChatGPT, Claude, and Cursor), ARC-AI is built on a highly modular, provider-agnostic runtime capable of real-time execution, semantic memory retrieval, and dynamic frontend actuation.
-
-### 🎥 Main Showcase Demo
-
-▶️ **[Watch the Full YouTube Demo](https://www.youtube.com/watch?v=jt7q8v5KsrU)**
-
-<img src="https://capsule-render.vercel.app/api?type=rect&color=0:00fff5,50:b026ff,100:ff2ee6&height=3" width="100%"/>
 
 ## 🔥 LATEST STABLE RELEASE: v1.0.0
 
@@ -87,7 +81,6 @@ Browser prompt flows have been completely replaced with a polished, execution-aw
 
 * **Workspace Management:** Native modal-based management UI (Create, Rename, Archive/Delete) with inline validation and responsive interaction flows.
 * **Platform Direction:** ARC-AI now visually and behaviorally acts as an enterprise-ready, execution-aware operating environment rather than a single conversational thread.
-* 🔗 **[Watch v0.13.0 Workspace Orchestration Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DYmluEPxOhf/)**
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:00fff5,50:b026ff,100:ff2ee6&height=3" width="100%"/>
 
@@ -97,7 +90,6 @@ ARC-AI was restructured into a more autonomous, execution-oriented runtime archi
 
 * **Execution & Provider Safety:** Recovery logic lives ABOVE the provider layer instead of mutating continuation chains. This preserves streaming continuity, `tool_call` consistency, and execution integrity.
 * **Multi-Workspace Foundation:** Introduced `WorkspaceRuntimeManager.js` to dynamically inject context. Every major runtime entity (conversations, memories, executions) became workspace-aware with isolated Pinecone vector namespaces.
-* 🔗 **[Watch Architecture Update 1 Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DYfdVKmRQOf/)** | 🔗 **[Watch Architecture Update 2 Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DYiHRfKRnqU/)**
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:00fff5,50:b026ff,100:ff2ee6&height=3" width="100%"/>
 
@@ -109,7 +101,6 @@ This phase established the intelligence layer on top of the persistent workspace
 * **Semantic Workspace Search:** Keyword and semantic retrieval across conversation titles, historical messages, and contextual discussions.
 * **Advanced Memory Lifecycle:** Clear separation of Conversation History, Working Context, Semantic Memory, and Long-Term User Facts.
 * **Intelligent Retrieval Layer:** Utilizes relevance scoring, recency weighting, and duplicate suppression to fetch prioritized, low-noise context.
-* 🔗 **[Watch Provider Routing Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DYNhWsDxFG1/)** | 🔗 **[Watch Runtime Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DYXqoNMtwjL/)**
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:00fff5,50:b026ff,100:ff2ee6&height=3" width="100%"/>
 
@@ -121,30 +112,25 @@ ARC-AI is equipped with a suite of autonomous tools for research, automation, co
 
 * Real-time webcam video feed for live vision input. Captures the current camera frame when the user speaks and pipes the frame directly into the existing `ai:stt:final` socket payload.
 * Routes visual context securely to the Pixtral vision model, protected by runtime safety guardrails to prevent silent attachment loss.
-* 🔗 **[Watch Live Vision Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DX84FejNgwo/)**
 
 ### 🌐 2. Live Web Research
 
 * Real-time DOM scraping using Cheerio.
 * API-based search, live weather, and news fetching capabilities.
-* 🔗 **[Watch Web Research Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DW31J3bEbu9/)**
 
 ### ⏰ 3. Proactive Routine Engine
 
 * Converts natural language into scheduled cron jobs.
 * Robust background execution system for deferred tasks and recurring routines.
-* 🔗 **[Watch Proactive Routine Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DW7DQ8lE-Wr/)**
 
 ### 💬 4. WhatsApp Automation
 
 * Autonomous message creation, delivery, and seamless integration with agent workflows.
-* 🔗 **[Watch WhatsApp Automation Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DYH4hoYR1gC/)**
 
 ### 🖥️ 5. UI Actuation & External Communication
 
 * **UI Actuation:** Dynamically change themes, open websites, play media, and copy to clipboard based on conversational context.
 * **Serverless Email:** Utilizes a Google Apps Script webhook to bypass SMTP restrictions, ensuring 100% reliable production delivery.
-* 🔗 **[Watch UI Actuation Demo](https://www.instagram.com/aashutosh_vaishnav.31/reel/DWzcz9YE797/)**
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:00fff5,50:b026ff,100:ff2ee6&height=3" width="100%"/>
 
@@ -180,7 +166,7 @@ ARC-AI is equipped with a suite of autonomous tools for research, automation, co
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Aashutosh31/arc-ai-project.git
+git clone https://github.com/Navneet6050/arc-ai-project.git
 cd arc-ai-project
 
 ```
@@ -278,12 +264,11 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author & Original Creator
 
-**Aashutosh Bairagi**
+**Navneet Kumar**
 *Built ARC-AI from scratch (architecture, backend, agent system, RAG pipeline, UI actuation). First published with live demo and deployment.*
 
-* 🔗 **GitHub:** [Aashutosh31](https://github.com/Aashutosh31)
-* 🔗 **LinkedIn:** [Aashutosh Bairagi](https://www.linkedin.com/in/aashutosh-bairagi-559aa530b/)
-* 🐦 **Twitter/X:** [@Aashutosh_dev31](https://x.com/Aashutosh_dev31)
+* 🔗 **GitHub:** [Navneet Kumar](https://github.com/Navneet6050)
+* 🔗 **LinkedIn:** [Navneet Kumar](https://www.linkedin.com/in/contactnavneet04/)
 
 > *If you are viewing this project elsewhere, verify the original source here.*
 

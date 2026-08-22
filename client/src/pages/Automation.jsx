@@ -16,7 +16,7 @@ import SeoPageLayout, {
   TechRow,
 } from '../components/SeoPageLayout';
 
-const DEMO_URL = 'https://www.instagram.com/aashutosh_vaishnav.31/reel/DW7DQ8lE-Wr/';
+const DEMO_URL = 'https://drive.google.com/file/d/1XPyXsxNj0aKDxCOdOPcj1kknWFkK79q6/view?usp=sharing';
 
 const Automation = () => (
   <SeoPageLayout

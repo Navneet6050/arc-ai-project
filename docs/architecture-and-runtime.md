@@ -21,15 +21,11 @@ This document consolidates ARC-AI's architectural deep dives across `v0.11.0-bet
 - multimodal-safe orchestration
 - production-hardened streaming/runtime behavior
 
-Live Demo Video: https://www.instagram.com/aashutosh_vaishnav.31/reel/DYXqoNMtwjL/
+Demo Video: https://drive.google.com/file/d/1XPyXsxNj0aKDxCOdOPcj1kknWFkK79q6/view?usp=sharing
 
 ### v0.12.0-beta Runtime Architecture Evolution
 
 `v0.12.0-beta` expands ARC-AI from assistant behavior into execution-aware runtime infrastructure.
-
-Update 1 Live Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DYfdVKmRQOf/
-
-Update 2 Live Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DYiHRfKRnqU/
 
 ---
 

@@ -253,7 +253,7 @@ const About = () => (
 
       <AuthorCard>
         <AuthorInfo>
-          <h3>Aashutosh Bairagi</h3>
+          <h3>Navneet Kumar</h3>
           <p>Original creator of ARC-AI — architecture, backend, agent system, RAG pipeline, and UI actuation.</p>
         </AuthorInfo>
         <AuthorLinks>

@@ -1007,15 +1007,12 @@ const SeoPageLayout = ({
           <FooterCol>
             <h4>Connect</h4>
             <a href={LINKS.repo} target="_blank" rel="noopener noreferrer"><GithubIcon /> Source code</a>
-            <a href={LINKS.github} target="_blank" rel="noopener noreferrer"><GithubIcon /> @Aashutosh31</a>
-            <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer"><LinkedinIcon /> LinkedIn</a>
-            <a href={LINKS.x} target="_blank" rel="noopener noreferrer"><XIcon /> @Aashutosh_dev31</a>
-            <a href={LINKS.youtube} target="_blank" rel="noopener noreferrer"><YoutubeIcon /> Full demo</a>
+            <a href={LINKS.github} target="_blank" rel="noopener noreferrer"><GithubIcon /> @Navneet6050</a>
           </FooterCol>
         </FooterInner>
 
         <FooterBottom>
-          <span>© {new Date().getFullYear()} ARC-AI · Built by Aashutosh Bairagi</span>
+          <span>© {new Date().getFullYear()} ARC-AI · Built by Navneet Kumar & Debasish Kumar</span>
           <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">MIT Licensed — attribution required</a>
         </FooterBottom>
       </FooterEl>
