@@ -6,5 +6,4 @@ export const LINKS = {
   repo: 'https://github.com/Navneet6050/arc-ai-project',
   github: 'https://github.com/Navneet6050',
   linkedin: 'https://www.linkedin.com/in/contactnavneet04/',
-  Drive Link for Video: 'https://drive.google.com/file/d/1XPyXsxNj0aKDxCOdOPcj1kknWFkK79q6/view?usp=sharing',
 };
