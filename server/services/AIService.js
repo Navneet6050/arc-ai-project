@@ -185,7 +185,7 @@ const shouldUsePlanner = (toolCalls, assistantText) => {
                 : toolCalls[0].function.arguments || {};
             const argText = JSON.stringify(args).toLowerCase();
             if (plannerTriggerKeywords.some((k) => argText.includes(k))) return true;
-        } catch (e) {}
+        } catch (e) { }
     }
 
     return false;
@@ -394,7 +394,7 @@ class AIService {
                     });
                     await newConversation.save();
                     conversationId = newConversation._id;
-                    
+
                     // Notify frontend of new conversation ID
                     if (socket) {
                         socket.emit('ai:conversation:created', {
@@ -424,8 +424,8 @@ class AIService {
         try {
             console.log(`[Planner] Incoming user command: ${String(text || '').trim()}`);
             const now = new Date();
-            const currentDateString = now.toLocaleString('en-US', { 
-                weekday: 'long', year: 'numeric', month: 'long', 
+            const currentDateString = now.toLocaleString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long',
                 day: 'numeric', hour: '2-digit', minute: '2-digit'
             });
 
@@ -570,20 +570,20 @@ class AIService {
 
             const baseMessageContent = text || (document ? `Please analyze the attached document: ${document.name}` : 'Hello');
 
-                        const userFacts = isGuest ? [] : await UserFact.find({ userId, workspaceId: workspaceContext.workspaceId || null }).sort({ pinned: -1, createdAt: -1 }).limit(12).lean();
+            const userFacts = isGuest ? [] : await UserFact.find({ userId, workspaceId: workspaceContext.workspaceId || null }).sort({ pinned: -1, createdAt: -1 }).limit(12).lean();
 
-                        let retrievalItems = [];
-                        if (!isGuest) {
-                            try {
-                                const ctx = await WorkspaceContextManager.getActiveContext({ userId, conversationId, query: baseMessageContent, limit: 10, workspaceId });
-                                retrievalItems = ctx?.items || [];
-                                this.wsLog.retrievalExecuted(userId, workspaceId, 'WorkspaceContextManager', retrievalItems.length);
-                            } catch (err) {
-                                console.warn('[AIService] WorkspaceContextManager failed, falling back to buildMemoryContext', err?.message || err);
-                                retrievalItems = await buildMemoryContext({ userId, query: baseMessageContent, limit: 10, workspaceId });
-                                this.wsLog.retrievalExecuted(userId, workspaceId, 'buildMemoryContext', retrievalItems.length);
-                            }
-                        }
+            let retrievalItems = [];
+            if (!isGuest) {
+                try {
+                    const ctx = await WorkspaceContextManager.getActiveContext({ userId, conversationId, query: baseMessageContent, limit: 10, workspaceId });
+                    retrievalItems = ctx?.items || [];
+                    this.wsLog.retrievalExecuted(userId, workspaceId, 'WorkspaceContextManager', retrievalItems.length);
+                } catch (err) {
+                    console.warn('[AIService] WorkspaceContextManager failed, falling back to buildMemoryContext', err?.message || err);
+                    retrievalItems = await buildMemoryContext({ userId, query: baseMessageContent, limit: 10, workspaceId });
+                    this.wsLog.retrievalExecuted(userId, workspaceId, 'buildMemoryContext', retrievalItems.length);
+                }
+            }
 
             const recentMemoryTurnsText = recentMemories.length > 0
                 ? `\n\nRECENT MEMORY TURNS:\n${recentMemories.map((message, index) => `${index + 1}. ${String(message.content || '').slice(0, 180)}`).join('\n')}`
@@ -598,7 +598,7 @@ class AIService {
 
             let longTermMemoryText = "";
             if (userFacts.length > 0) {
-                longTermMemoryText = "\n\nCRITICAL CONTEXT - You permanently know these facts about the user:\n" + 
+                longTermMemoryText = "\n\nCRITICAL CONTEXT - You permanently know these facts about the user:\n" +
                     userFacts.map(f => `- ${f.fact}`).join("\n");
             }
 
@@ -622,11 +622,11 @@ class AIService {
 
                     if (document.type === 'application/pdf') {
                         const buffer = Buffer.from(document.base64, 'base64');
-                        
+
                         // 🚀 Clean, simple, and guaranteed to work
                         const pdfData = await pdfExtract(buffer);
                         parsedText = pdfData.text;
-                        
+
                         if (!parsedText || parsedText.trim() === '') {
                             throw new Error("EMPTY_SCANNED_PDF");
                         }
@@ -641,7 +641,7 @@ class AIService {
                     documentContext = `\n\n--- ATTACHED FILE CONTEXT (${document.name}) ---\nThe user has attached a file for you to read. Here is the text extracted from it:\n\n${parsedText}\n-----------------------------------\n`;
                 } catch (err) {
                     console.error("[Agent Router] Document parse error:", err.message || err);
-                    
+
                     if (err.message === "EMPTY_SCANNED_PDF") {
                         documentContext = `\n\n[System Note: The attached PDF '${document.name}' appears to be an image-based or scanned PDF. No readable text could be extracted. Please inform the user.]`;
                     } else {
@@ -688,7 +688,7 @@ class AIService {
                     IDENTITY DIRECTIVE:
                     If a user asks "who created you", "who made you", or similar identity/creator questions, reply exactly with:
 
-                    "I am ARC-AI, an autonomous multimodal AI platform created by Aashutosh Bairagi — an AI systems engineer focused on realtime architectures, autonomous agents, and next-generation intelligent software systems."
+                    "I am ARC-AI, an autonomous multimodal AI platform created by Navneet Kumar."
                     `;
 
             const tools = toolRegistry.getSchemas();
@@ -749,26 +749,19 @@ class AIService {
                 }))
             };
 
-            const makeContinuationGeneration = async ({ assistantMessage, toolResults }) => {
+            const makeContinuationGeneration = async ({ assistantMessage = null, toolResults = [] } = {}) => {
                 const continuationMessages = buildProviderContinuationMessages({
                     messages,
                     assistantMessage,
                     toolResults,
-                    provider: response?.provider || 'mistral'
+                    provider: assistantResponseMeta.provider
                 });
-
-                console.log('[AIService] provider continuation payload', continuationMessages.map((message) => ({
-                    role: message.role,
-                    toolCallIds: Array.isArray(message.toolCalls)
-                      ? message.toolCalls.map((toolCall) => toolCall?.id).filter(Boolean)
-                      : message.toolCallId || message.tool_call_id || null
-                })));
 
                 return this.llmRouter.generate({
                     messages: continuationMessages,
                     systemPrompt,
-                    tools: [],
-                    stream: true,
+                    tools: tools,
+                    stream: false,
                     temperature: imageBase64 ? 0.2 : 0.3,
                     userContext: {
                         userId,
@@ -783,7 +776,6 @@ class AIService {
             };
 
             if (toolCalls && toolCalls.length > 0) {
-                console.log(`[Agent Router] AI requested ${toolCalls.length} tool(s).`);
                 messages.push({
                     role: 'assistant',
                     content: finalOutputText || '',
@@ -826,165 +818,204 @@ class AIService {
                             content: step.result || {}
                         }));
 
-                        if (execResult.status === 'CANCELLED' || (controller.signal && controller.signal.aborted)) {
-                            finalOutputText = assistantDraftContent || finalOutputText || '';
-                            if (assistantDraftMessageId && conversationId) {
-                                console.log('[AIService] finalizing interrupted assistant draft', {
-                                    conversationId: String(conversationId),
-                                    messageId: String(assistantDraftMessageId),
-                                    contentLength: String(finalOutputText || '').length
-                                });
-                                await Message.findByIdAndUpdate(assistantDraftMessageId, {
-                                    content: finalOutputText,
-                                    provider: assistantResponseMeta.provider,
-                                    model: assistantResponseMeta.model,
-                                    metadata: {
-                                        tokens: assistantResponseMeta.tokens || { input: 0, output: 0 },
-                                        streaming: false,
-                                        interrupted: true,
-                                        partial: true,
-                                        state: 'cancelled'
-                                    }
-                                });
-                            }
-                        } else {
-                            if (execResult.status === 'FAILED' && socket) {
-                                socket.emit('ai:agent:status', {
-                                    status: 'synthesizing',
-                                    detail: 'Synthesizing a partial answer from recovered and failed steps.'
-                                });
-                            }
-
-                            if (assistantDraftMessageId && assistantDraftContent) {
-                                await Message.findByIdAndUpdate(assistantDraftMessageId, {
-                                    content: assistantDraftContent,
-                                    provider: assistantResponseMeta.provider,
-                                    model: assistantResponseMeta.model,
-                                    metadata: {
-                                        tokens: assistantResponseMeta.tokens || { input: 0, output: 0 },
-                                        streaming: true,
-                                        interrupted: false,
-                                        partial: true,
-                                        state: 'streaming'
-                                    }
-                                });
-                            }
-
-                            const finalGeneration = await makeContinuationGeneration({
-                                assistantMessage: assistantToolMessage,
-                                toolResults: plannerToolResults
+                    if (execResult.status === 'CANCELLED' || (controller.signal && controller.signal.aborted)) {
+                        finalOutputText = assistantDraftContent || finalOutputText || '';
+                        if (assistantDraftMessageId && conversationId) {
+                            console.log('[AIService] finalizing interrupted assistant draft', {
+                                conversationId: String(conversationId),
+                                messageId: String(assistantDraftMessageId),
+                                contentLength: String(finalOutputText || '').length
                             });
-
-                            finalOutputText = await this.streamingRuntime.consume(finalGeneration.stream, socket, controller.signal, async (chunkText) => {
-                                assistantDraftContent += chunkText;
-                                await persistAssistantDraft(assistantDraftContent, { interrupted: false, state: 'streaming' });
+                            await Message.findByIdAndUpdate(assistantDraftMessageId, {
+                                content: finalOutputText,
+                                provider: assistantResponseMeta.provider,
+                                model: assistantResponseMeta.model,
+                                metadata: {
+                                    tokens: assistantResponseMeta.tokens || { input: 0, output: 0 },
+                                    streaming: false,
+                                    interrupted: true,
+                                    partial: true,
+                                    state: 'cancelled'
+                                }
                             });
                         }
-                } else {
-                    console.log('[Planner] Delegating execution inline (quick tool path)');
-                    const plannedTools = toolCalls.map((toolCall) => this.mapCalendarToolName(toolCall.function.name, calendarIntent));
-                    console.log(`[Planner] Chosen tools (in order): ${plannedTools.join(' -> ')}`);
-
-                    for (const toolCall of toolCalls) {
-                        if (socket && socket.isInterrupted) {
-                            break;
-                        }
-
-                        const functionName = this.mapCalendarToolName(toolCall.function.name, calendarIntent);
-                        if (functionName !== toolCall.function.name) {
-                            console.log(
-                                `[Planner] Tool override applied: ${toolCall.function.name} -> ${functionName}`
-                            );
-                        } else {
-                            console.log(`[Planner] Selected tool: ${functionName}`);
-                        }
-
-                        const args = typeof toolCall.function.arguments === 'string' 
-                            ? JSON.parse(toolCall.function.arguments) : toolCall.function.arguments;
-
-                        console.log('[Planner] Before tool execution:', { tool: functionName, args });
-
-                        const toolResult = await TaskExecutor.executeTool(functionName, args, userId, socket, { signal: controller.signal, conversationId, workspaceId: workspaceContext.workspaceId });
-                        let finalToolResult = toolResult;
-
-                        if (!toolResult?.success) {
-                            const recovery = await ToolRecoveryManager.recoverToolResult({
-                                toolName: functionName,
-                                args,
-                                result: toolResult,
-                                userId,
-                                socket,
-                                signal: controller.signal,
-                                retryCount: 0
+                    } else {
+                        if (execResult.status === 'FAILED' && socket) {
+                            socket.emit('ai:agent:status', {
+                                status: 'synthesizing',
+                                detail: 'Synthesizing a partial answer from recovered and failed steps.'
                             });
-
-                            if (recovery?.recovered) {
-                                finalToolResult = recovery.result;
-                            }
-
-                            if (recovery?.shouldReplan && socket) {
-                                socket.emit('execution.replan.suggested', {
-                                    executionId: null,
-                                    tool: functionName,
-                                    reason: recovery.failureReason || 'inline tool failure'
-                                });
-                            }
                         }
 
-                        console.log('[Planner] After tool execution payload:', { tool: functionName, payload: finalToolResult });
-
-                        if (finalToolResult.clientAction && socket) {
-                            socket.emit('ai:client:action', finalToolResult.clientAction);
+                        if (assistantDraftMessageId && assistantDraftContent) {
+                            await Message.findByIdAndUpdate(assistantDraftMessageId, {
+                                content: assistantDraftContent,
+                                provider: assistantResponseMeta.provider,
+                                model: assistantResponseMeta.model,
+                                metadata: {
+                                    tokens: assistantResponseMeta.tokens || { input: 0, output: 0 },
+                                    streaming: true,
+                                    interrupted: false,
+                                    partial: true,
+                                    state: 'streaming'
+                                }
+                            });
                         }
 
-                        messages.push({
-                            role: 'tool',
-                            name: functionName,
-                            content: JSON.stringify(finalToolResult),
-                            toolCallId: toolCall.id
+                        const finalGeneration = await makeContinuationGeneration({
+                            assistantMessage: assistantToolMessage,
+                            toolResults: plannerToolResults
                         });
 
-                        if (functionName === 'scheduleMeeting' && finalToolResult?.success) {
-                            console.log('[Planner] scheduleMeeting succeeded; running optional checkCalendar confirmation.');
-                            const createdStart = finalToolResult?.event?.start;
-                            const createdEnd = finalToolResult?.event?.end;
-                            let confirmationArgs = { maxResults: 5 };
+                        finalOutputText = await this.streamingRuntime.consume(finalGeneration.stream, socket, controller.signal, async (chunkText) => {
+                            assistantDraftContent += chunkText;
+                            await persistAssistantDraft(assistantDraftContent, { interrupted: false, state: 'streaming' });
+                        });
+                    }
+                } else {
+                    console.log('[Planner] Delegating execution inline (quick tool path)');
+                    let currentToolCalls = toolCalls;
+                    let currentAssistantMessage = assistantToolMessage;
+                    let iterationCount = 0;
+                    const MAX_ITERATIONS = 5;
 
-                            if (createdStart && createdEnd) {
-                                const start = new Date(createdStart);
-                                const end = new Date(createdEnd);
-                                if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
-                                    const timeMin = new Date(start.getTime() - (60 * 60 * 1000));
-                                    const timeMax = new Date(end.getTime() + (60 * 60 * 1000));
-                                    confirmationArgs = {
-                                        timeMin: timeMin.toISOString(),
-                                        timeMax: timeMax.toISOString(),
-                                        maxResults: 10
-                                    };
+                    while (currentToolCalls && currentToolCalls.length > 0 && iterationCount < MAX_ITERATIONS) {
+                        iterationCount++;
+                        if (socket && socket.isInterrupted) break;
+
+                        const plannedTools = currentToolCalls.map((toolCall) => this.mapCalendarToolName(toolCall.function.name, calendarIntent));
+                        console.log(`[Planner] Chosen tools (in order): ${plannedTools.join(' -> ')}`);
+
+                        const accumulatedToolResults = [];
+
+                        for (const toolCall of currentToolCalls) {
+                            if (socket && socket.isInterrupted) {
+                                break;
+                            }
+
+                            const functionName = this.mapCalendarToolName(toolCall.function.name, calendarIntent);
+                            if (functionName !== toolCall.function.name) {
+                                console.log(
+                                    `[Planner] Tool override applied: ${toolCall.function.name} -> ${functionName}`
+                                );
+                            } else {
+                                console.log(`[Planner] Selected tool: ${functionName}`);
+                            }
+
+                            const args = typeof toolCall.function.arguments === 'string'
+                                ? JSON.parse(toolCall.function.arguments) : toolCall.function.arguments;
+
+                            console.log('[Planner] Before tool execution:', { tool: functionName, args });
+
+                            const toolResult = await TaskExecutor.executeTool(functionName, args, userId, socket, { signal: controller.signal, conversationId, workspaceId: workspaceContext.workspaceId });
+                            let finalToolResult = toolResult;
+
+                            if (!toolResult?.success) {
+                                const recovery = await ToolRecoveryManager.recoverToolResult({
+                                    toolName: functionName,
+                                    args,
+                                    result: toolResult,
+                                    userId,
+                                    socket,
+                                    signal: controller.signal,
+                                    retryCount: 0
+                                });
+
+                                if (recovery?.recovered) {
+                                    finalToolResult = recovery.result;
+                                }
+
+                                if (recovery?.shouldReplan && socket) {
+                                    socket.emit('execution.replan.suggested', {
+                                        executionId: null,
+                                        tool: functionName,
+                                        reason: recovery.failureReason || 'inline tool failure'
+                                    });
                                 }
                             }
 
-                            const confirmationResult = await TaskExecutor.executeTool('checkCalendar', confirmationArgs, userId, socket, { signal: controller.signal });
-                            // Keep the confirmation for internal reasoning only; do not feed a synthetic tool_call_id back to the provider.
-                            finalToolResult.internalConfirmation = confirmationResult;
+                            console.log('[Planner] After tool execution payload:', { tool: functionName, payload: finalToolResult });
+
+                            if (finalToolResult.clientAction && socket) {
+                                socket.emit('ai:client:action', finalToolResult.clientAction);
+                            }
+
+                            messages.push({
+                                role: 'tool',
+                                name: functionName,
+                                content: JSON.stringify(finalToolResult),
+                                toolCallId: toolCall.id
+                            });
+
+                            accumulatedToolResults.push({
+                                toolCallId: toolCall.id,
+                                name: functionName,
+                                content: finalToolResult
+                            });
+
+                            if (functionName === 'scheduleMeeting' && finalToolResult?.success) {
+                                console.log('[Planner] scheduleMeeting succeeded; running optional checkCalendar confirmation.');
+                                const createdStart = finalToolResult?.event?.start;
+                                const createdEnd = finalToolResult?.event?.end;
+                                let confirmationArgs = { maxResults: 5 };
+
+                                if (createdStart && createdEnd) {
+                                    const start = new Date(createdStart);
+                                    const end = new Date(createdEnd);
+                                    if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
+                                        const timeMin = new Date(start.getTime() - (60 * 60 * 1000));
+                                        const timeMax = new Date(end.getTime() + (60 * 60 * 1000));
+                                        confirmationArgs = {
+                                            timeMin: timeMin.toISOString(),
+                                            timeMax: timeMax.toISOString(),
+                                            maxResults: 10
+                                        };
+                                    }
+                                }
+
+                                const confirmationResult = await TaskExecutor.executeTool('checkCalendar', confirmationArgs, userId, socket, { signal: controller.signal });
+                                // Keep the confirmation for internal reasoning only; do not feed a synthetic tool_call_id back to the provider.
+                                finalToolResult.internalConfirmation = confirmationResult;
+                            }
+                        }
+
+                        const finalGeneration = await makeContinuationGeneration({
+                            assistantMessage: {
+                                role: 'assistant',
+                                toolCalls: currentToolCalls.map(tc => ({
+                                    id: tc.id,
+                                    function: {
+                                        name: tc.function.name,
+                                        arguments: tc.function.arguments || {}
+                                    }
+                                }))
+                            },
+                            toolResults: accumulatedToolResults
+                        });
+
+                        if (finalGeneration.toolCalls && finalGeneration.toolCalls.length > 0) {
+                            currentToolCalls = finalGeneration.toolCalls;
+                            currentAssistantMessage = {
+                                role: 'assistant',
+                                content: finalGeneration.text || '',
+                                toolCalls: currentToolCalls.map((tc) => ({
+                                    id: tc.id,
+                                    function: { name: tc.function.name, arguments: tc.function.arguments || {} }
+                                }))
+                            };
+                            messages.push(currentAssistantMessage);
+                        } else {
+                            finalOutputText = finalGeneration.text || '';
+                            currentToolCalls = null;
+                            if (socket) {
+                                await this.streamingRuntime.emitText(socket, finalOutputText, controller.signal, async (chunkText) => {
+                                    assistantDraftContent += chunkText;
+                                    await persistAssistantDraft(assistantDraftContent, { interrupted: false, state: 'streaming' });
+                                });
+                            }
+                            break;
                         }
                     }
-
-                    const providerToolResults = toolCalls.map((toolCall) => {
-                        const matchedResult = messages.find((message) => message.role === 'tool' && message.toolCallId === toolCall.id);
-                        return matchedResult ? {
-                            toolCallId: toolCall.id,
-                            name: matchedResult.name,
-                            content: matchedResult.content
-                        } : null;
-                    }).filter(Boolean);
-
-                    const finalGeneration = await makeContinuationGeneration({
-                        assistantMessage: assistantToolMessage,
-                        toolResults: providerToolResults
-                    });
-
-                    finalOutputText = await this.streamingRuntime.consume(finalGeneration.stream, socket, controller.signal);
                 }
             } else {
                 finalOutputText = response?.text || '';
@@ -1158,15 +1189,15 @@ class AIService {
 
             console.error("[AIService] Error processing query:", error);
             let userFriendlyError = "An internal system error occurred.";
-            
-                if (error.statusCode === 429 || (error.message && (error.message.includes('capacity exceeded') || error.message.includes('Rate limit exceeded')))) {
-                userFriendlyError = imageBase64 
+
+            if (error.statusCode === 429 || (error.message && (error.message.includes('capacity exceeded') || error.message.includes('Rate limit exceeded')))) {
+                userFriendlyError = imageBase64
                     ? "Your current multimodal provider is rate-limited right now. Please wait 1-2 minutes and retry the image request."
                     : "The current AI provider is rate-limited. Please wait a minute and try again.";
             } else if (error.statusCode === 400) {
-                 userFriendlyError = "There was an issue processing the file format. Please try again.";
+                userFriendlyError = "There was an issue processing the file format. Please try again.";
             }
-            
+
             if (socket) socket.emit('bot_error', userFriendlyError);
             return "Error";
         } finally {
