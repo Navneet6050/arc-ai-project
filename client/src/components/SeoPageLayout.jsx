@@ -1013,7 +1013,6 @@ const SeoPageLayout = ({
 
         <FooterBottom>
           <span>© {new Date().getFullYear()} ARC-AI · Built by Navneet Kumar & Debasish Kumar</span>
-          <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">MIT Licensed — attribution required</a>
         </FooterBottom>
       </FooterEl>
     </Page>

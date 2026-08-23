@@ -271,15 +271,6 @@ const About = () => (
           </IconButton>
         </AuthorLinks>
       </AuthorCard>
-
-      <LicenseNote>
-        <strong>MIT Licensed, with attribution required.</strong> ARC-AI is open source — free to use, modify,
-        and distribute. Any reuse must credit the original author and link back to the{' '}
-        <a href={LINKS.repo} target="_blank" rel="noopener noreferrer" style={{ color: '#b887ff' }}>
-          source repository
-        </a>{' '}
-        without claiming the project as someone else's own work.
-      </LicenseNote>
     </Section>
   </SeoPageLayout>
 );

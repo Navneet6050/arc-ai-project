@@ -130,7 +130,7 @@ const TestUserAccessModal = ({ isOpen, onClose, onProceed }) => {
   if (!isOpen) return null;
 
   const handleRequestAccess = () => {
-    window.location.href = 'mailto:arc.ai.assistant05@gmail.com?subject=Test%20User%20Request&body=Hello%2C%0A%0AI%20would%20like%20to%20request%20access%20to%20the%20Google%20Calendar%20integration%20in%20ARC-AI.%0A%0APlease%20include%20the%20following%20information%3A%0A-%20Full%20Name%3A%0A-%20Google%20Email%20Address%3A%0A-%20Use%20case%20for%20ARC-AI%20Calendar%20Assistant%20%28optional%29%3A';
+    window.location.href = 'mailto:n.navneetk04@gmail.com?subject=Test%20User%20Request&body=Hello%2C%0A%0AI%20would%20like%20to%20request%20access%20to%20the%20Google%20Calendar%20integration%20in%20ARC-AI.%0A%0APlease%20include%20the%20following%20information%3A%0A-%20Full%20Name%3A%0A-%20Google%20Email%20Address%3A%0A-%20Use%20case%20for%20ARC-AI%20Calendar%20Assistant%20%28optional%29%3A';
   };
 
   return (
@@ -144,7 +144,7 @@ const TestUserAccessModal = ({ isOpen, onClose, onProceed }) => {
 
         <InfoBox>
           <InfoLabel>Request Access To</InfoLabel>
-          <InfoText>arc.ai.assistant05@gmail.com</InfoText>
+          <InfoText>n.navneetk04@gmail.com</InfoText>
           <InfoLabel style={{ marginTop: '12px' }}>In Your Email, Include</InfoLabel>
           <ul style={{ color: '#b3d9ff', fontSize: '13px', margin: '4px 0 0 0', paddingLeft: '20px', lineHeight: '1.6' }}>
             <li>Your full name</li>
