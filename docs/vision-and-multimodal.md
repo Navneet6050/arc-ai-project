@@ -23,7 +23,7 @@ ARC-AI extends static image understanding to realtime camera-assisted interactio
 - low-friction multimodal command flow
 - seamless integration with existing streaming UX
 
-Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DX84FejNgwo/
+
 
 ---
 
@@ -70,4 +70,4 @@ Vision workflows preserve ARC-AI's realtime behavior.
 
 The multimodal safety model was strengthened during provider-orchestrated runtime refactors.
 
-Architecture Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DYNhWsDxFG1/
+

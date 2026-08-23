@@ -15,7 +15,7 @@ ARC-AI performs realtime web intelligence gathering through scraping and API-bac
 - weather retrieval
 - news retrieval
 
-Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DW31J3bEbu9/
+
 
 ---
 
@@ -29,7 +29,7 @@ ARC-AI supports autonomous task scheduling and background execution.
 - recurring and delayed routine execution
 - planner-driven background task flow
 
-Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DW7DQ8lE-Wr/
+
 
 ---
 
@@ -43,7 +43,7 @@ ARC-AI automates message dispatch workflows through integrated WhatsApp tooling.
 - autonomous message composition and delivery
 - agent workflow integration
 
-Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DYH4hoYR1gC/
+
 
 ---
 
@@ -75,7 +75,7 @@ ARC-AI can directly actuate the user interface for command execution outcomes.
 - play media
 - copy to clipboard
 
-Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DWzcz9YE797/
+
 
 ---
 

@@ -14,7 +14,7 @@ ARC-AI's memory system provides long-term contextual continuity using embeddings
 - semantic lookup through Pinecone
 - long-term personalized memory recall
 
-Demo: https://www.instagram.com/aashutosh_vaishnav.31/reel/DW83J1HESyQ/
+
 
 ---
 
