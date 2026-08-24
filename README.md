@@ -13,14 +13,14 @@
 
 <br/><br/>
 
-<a href="https://arc-ai-project.vercel.app/" target="_blank">
+<a href="https://arc-ai-project-ten.vercel.app/" target="_blank">
   <img width="100%" alt="ARC-AI Demo" src="https://github.com/user-attachments/assets/3f9fd56f-263c-4fdd-b6fd-391612ba7807" />
 </a>
 
 <p><strong>🔗 Click the image to try the Live Application</strong></p>
 
 <p>
-  <a href="https://arc-ai-project.vercel.app/"><img src="https://img.shields.io/badge/Live-Demo-0d0221?style=for-the-badge&logo=vercel&logoColor=00fff5&labelColor=0d0221&color=00fff5" /></a>
+  <a href="https://arc-ai-project-ten.vercel.app/"><img src="https://img.shields.io/badge/Live-Demo-0d0221?style=for-the-badge&logo=vercel&logoColor=00fff5&labelColor=0d0221&color=00fff5" /></a>
   <a href="https://github.com/Navneet6050/arc-ai-project"><img src="https://img.shields.io/badge/Source-Code-0d0221?style=for-the-badge&logo=github&logoColor=ff2ee6&labelColor=0d0221&color=ff2ee6" /></a>
 </p>
 
