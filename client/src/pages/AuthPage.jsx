@@ -725,6 +725,13 @@ const AuthPage = ({ isRegister }) => {
     setError('');
     setLoading(true);
 
+    const popup = window.open('', 'arc-ai-google-auth', 'width=520,height=720');
+    if (!popup) {
+      setError('Popup blocked by the browser. Please allow popups and try again.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await axios.get(`${API_URL}/api/auth/google/url`);
       const { url } = res.data;
@@ -733,13 +740,10 @@ const AuthPage = ({ isRegister }) => {
         throw new Error('Google auth URL missing.');
       }
 
-      const popup = window.open(url, 'arc-ai-google-auth', 'width=520,height=720');
-      if (!popup) {
-        throw new Error('Popup blocked by the browser. Please allow popups and try again.');
-      }
-
+      popup.location.href = url;
       setLoading(false);
     } catch (err) {
+      popup.close();
       setError(err.response?.data?.message || err.message || 'Unable to start Google sign-in.');
       setLoading(false);
     }

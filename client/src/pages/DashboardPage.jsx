@@ -769,6 +769,12 @@ const DashboardPageContent = () => {
       return;
     }
 
+    const popup = window.open('', 'arc-ai-google-link', 'width=520,height=720');
+    if (!popup) {
+      setGoogleMessage('Popup blocked by the browser. Please allow popups and try again.');
+      return;
+    }
+
     try {
       setGoogleLoading(true);
       setGoogleMessage('');
@@ -781,11 +787,9 @@ const DashboardPageContent = () => {
         throw new Error(data.message || 'Failed to start Google link flow.');
       }
 
-      const popup = window.open(data.url, 'arc-ai-google-link', 'width=520,height=720');
-      if (!popup) {
-        throw new Error('Popup blocked by the browser. Please allow popups and try again.');
-      }
+      popup.location.href = data.url;
     } catch (error) {
+      popup.close();
       setGoogleMessage(error.message || 'Unable to start Google link flow.');
     } finally {
       setGoogleLoading(false);
