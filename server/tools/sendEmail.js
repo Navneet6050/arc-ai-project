@@ -1,3 +1,5 @@
+const User = require('../models/User');
+
 module.exports = {
     // 1. Mistral Function Calling Schema
     schema: {
@@ -18,8 +20,51 @@ module.exports = {
     },
     
     // 2. Execution Logic
-    execute: async (args) => {
-        console.log(`[Tool: sendEmail] Routing email via Google Serverless Webhook to: ${args.recipient}`);
+    execute: async (args, context) => {
+        const adminEmail = process.env.ARC_AI_EMAIL_ADMIN;
+
+        if (!adminEmail) {
+            return {
+                success: false,
+                message: "Email automation is not configured."
+            };
+        }
+
+        if (!context?.userId) {
+            return {
+                success: false,
+                message: "Unauthorized email request."
+            };
+        }
+
+        try {
+            const user = await User.findById(context.userId).lean();
+            if (!user || !user.email) {
+                return {
+                    success: false,
+                    message: "Unauthorized email request."
+                };
+            }
+
+            const currentEmail = user.email.trim().toLowerCase();
+            const allowedEmail = adminEmail.trim().toLowerCase();
+
+            if (currentEmail !== allowedEmail) {
+                console.log(`[Tool: sendEmail] Unauthorized email attempt by user ${context.userId}`);
+                return {
+                    success: false,
+                    message: "Email automation is currently available only to the application owner."
+                };
+            }
+        } catch (error) {
+            console.error(`[Tool: sendEmail] Authorization error:`, error);
+            return {
+                success: false,
+                message: "Unauthorized email request."
+            };
+        }
+
+        console.log('[Tool: sendEmail] Authorized email request; routing via Google Serverless Webhook.');
 
         const webhookUrl = process.env.GOOGLE_EMAIL_WEBHOOK;
 
